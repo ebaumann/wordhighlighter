@@ -179,6 +179,11 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
 
         menuItemReadTextfile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         menuItemReadTextfile.setText(bundle.getString("WordHighlighterDialog.menuItemReadTextfile.text")); // NOI18N
+        menuItemReadTextfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemReadTextfileActionPerformed(evt);
+            }
+        });
         menuFile.add(menuItemReadTextfile);
         menuFile.add(sep1);
 
@@ -245,6 +250,10 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
     private void menuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAboutActionPerformed
         displayAbout();
     }//GEN-LAST:event_menuItemAboutActionPerformed
+
+    private void menuItemReadTextfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemReadTextfileActionPerformed
+        panel.readTextfile();
+    }//GEN-LAST:event_menuItemReadTextfileActionPerformed
 
     /**
     * @param args the command line arguments
