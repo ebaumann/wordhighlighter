@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
@@ -44,6 +45,8 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
     private static final String KEY_WORDBOOK = "Wordbook";
     private static final String KEY_TEXTFILE_DIR = "TextfileDir";
     private static final String KEY_WORDBOOK_DIR = "WordbookDir";
+    private static final ResourceBundle BUNDLE =
+        ResourceBundle.getBundle("de/elmar_baumann/whl/Bundle");
     private File wordbookDir;
     private File textfileDir;
 
@@ -160,6 +163,7 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
         JFileChooser fc = new JFileChooser(currentDir);
 
         fc.setMultiSelectionEnabled(false);
+        fc.setDialogTitle(BUNDLE.getString("SelectTextfile.Title.Encoding"));
 
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile();
