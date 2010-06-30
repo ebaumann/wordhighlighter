@@ -36,7 +36,7 @@ public final class Properties {
     /**
      * Version number of this Applacation
      */
-    public static final String APP_VERSION = "0.1.2";
+    public static final String APP_VERSION = "0.1.3";
 
     /**
      * Text encoding
