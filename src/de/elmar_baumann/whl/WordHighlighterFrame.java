@@ -1,5 +1,5 @@
 /*
- * @(#)WordHighlighterDialog.java    Created on 2010-06-25
+ * @(#)WordHighlighterFrame.java    Created on 2010-06-25
  *
  * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
  *
@@ -21,6 +21,7 @@
 package de.elmar_baumann.whl;
 
 import java.awt.Image;
+import java.io.File;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -37,18 +38,29 @@ import javax.swing.JOptionPane;
  *
  * @author Elmar Baumann
  */
-public class WordHighlighterDialog extends javax.swing.JDialog {
+public class WordHighlighterFrame extends javax.swing.JFrame {
     private static final long serialVersionUID = 1L;
-    private static final String KEY_WIDTH = "WordHighlighterDialog.Width";
-    private static final String KEY_HEIGHT = "WordHighlighterDialog.Height";
-    private static final String KEY_X = "WordHighlighterDialog.X";
-    private static final String KEY_Y = "WordHighlighterDialog.Y";
+    private static final String KEY_WIDTH = "WordHighlighterFrame.Width";
+    private static final String KEY_HEIGHT = "WordHighlighterFrame.Height";
+    private static final String KEY_X = "WordHighlighterFrame.X";
+    private static final String KEY_Y = "WordHighlighterFrame.Y";
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(
                                                  "de/elmar_baumann/whl/Bundle");
 
-    public WordHighlighterDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public WordHighlighterFrame() {
         initComponents();
+        panel.addContentChangeListener(new TextfileDisplayer());
+    }
+
+    private class TextfileDisplayer implements ContentChangeListener {
+
+        public void textFileRead(File file) {
+            setTitle(Properties.APP_NAME + " - " + file.getName());
+        }
+
+        public void contentChanged() {
+            setTitle(Properties.APP_NAME);
+        }
     }
 
     @Override
@@ -85,14 +97,14 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
     private void writeSizeAndLocation() {
         try {
             Preferences prefs =
-                    Preferences.userNodeForPackage(WordHighlighterDialog.class);
+                    Preferences.userNodeForPackage(WordHighlighterFrame.class);
 
             prefs.putInt(KEY_X, getX());
             prefs.putInt(KEY_Y, getY());
             prefs.putInt(KEY_WIDTH, getHeight());
             prefs.putInt(KEY_HEIGHT, getHeight());
         } catch (Exception ex) {
-            Logger.getLogger(WordHighlighterDialog.class.getName()).log(
+            Logger.getLogger(WordHighlighterFrame.class.getName()).log(
                     Level.SEVERE, null, ex);
         }
     }
@@ -100,7 +112,7 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
     private void setSizeAndLocation() {
         try {
             Preferences prefs =
-                    Preferences.userNodeForPackage(WordHighlighterDialog.class);
+                    Preferences.userNodeForPackage(WordHighlighterFrame.class);
 
             int x     = prefs.getInt(KEY_X, -1);
             int y     = prefs.getInt(KEY_Y, -1);
@@ -114,7 +126,7 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(WordHighlighterDialog.class.getName()).log(
+            Logger.getLogger(WordHighlighterFrame.class.getName()).log(
                     Level.SEVERE, null, ex);
             setLocationRelativeTo(null);
         }
@@ -127,9 +139,9 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
 
     private void displayHelp() {
         String title = MessageFormat.format(BUNDLE.getString(
-                      "WordHighlighterDialog.Help.Title"), Properties.APP_NAME);
+                      "WordHighlighterFrame.Help.Title"), Properties.APP_NAME);
         String msg   = MessageFormat.format(
-                      BUNDLE.getString("WordHighlighterDialog.Help.Text"),
+                      BUNDLE.getString("WordHighlighterFrame.Help.Text"),
                       Properties.APP_NAME);
 
         JOptionPane.showMessageDialog(this, msg, title,
@@ -138,9 +150,9 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
 
     private void displayAbout() {
         String title = MessageFormat.format(BUNDLE.getString(
-                     "WordHighlighterDialog.About.Title"), Properties.APP_NAME);
+                     "WordHighlighterFrame.About.Title"), Properties.APP_NAME);
         String msg   = MessageFormat.format(BUNDLE.getString(
-                    "WordHighlighterDialog.About.Text"), Properties.APP_NAME,
+                    "WordHighlighterFrame.About.Text"), Properties.APP_NAME,
                     Properties.APP_VERSION);
 
         JOptionPane.showMessageDialog(this, msg, title,
@@ -175,10 +187,10 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
         });
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("de/elmar_baumann/whl/Bundle"); // NOI18N
-        menuFile.setText(bundle.getString("WordHighlighterDialog.menuFile.text")); // NOI18N
+        menuFile.setText(bundle.getString("WordHighlighterFrame.menuFile.text")); // NOI18N
 
         menuItemReadTextfile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        menuItemReadTextfile.setText(bundle.getString("WordHighlighterDialog.menuItemReadTextfile.text")); // NOI18N
+        menuItemReadTextfile.setText(bundle.getString("WordHighlighterFrame.menuItemReadTextfile.text")); // NOI18N
         menuItemReadTextfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemReadTextfileActionPerformed(evt);
@@ -188,7 +200,7 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
         menuFile.add(sep1);
 
         menuItemExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        menuItemExit.setText(bundle.getString("WordHighlighterDialog.menuItemExit.text")); // NOI18N
+        menuItemExit.setText(bundle.getString("WordHighlighterFrame.menuItemExit.text")); // NOI18N
         menuItemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemExitActionPerformed(evt);
@@ -198,10 +210,10 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
 
         menuBar.add(menuFile);
 
-        menuHelp.setText(bundle.getString("WordHighlighterDialog.menuHelp.text")); // NOI18N
+        menuHelp.setText(bundle.getString("WordHighlighterFrame.menuHelp.text")); // NOI18N
 
         menuItemHelp.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        menuItemHelp.setText(bundle.getString("WordHighlighterDialog.menuItemHelp.text")); // NOI18N
+        menuItemHelp.setText(bundle.getString("WordHighlighterFrame.menuItemHelp.text")); // NOI18N
         menuItemHelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemHelpActionPerformed(evt);
@@ -209,7 +221,7 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
         });
         menuHelp.add(menuItemHelp);
 
-        menuItemAbout.setText(bundle.getString("WordHighlighterDialog.menuItemAbout.text")); // NOI18N
+        menuItemAbout.setText(bundle.getString("WordHighlighterFrame.menuItemAbout.text")); // NOI18N
         menuItemAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemAboutActionPerformed(evt);
@@ -261,7 +273,7 @@ public class WordHighlighterDialog extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                WordHighlighterDialog dialog = new WordHighlighterDialog(new javax.swing.JFrame(), true);
+                WordHighlighterFrame dialog = new WordHighlighterFrame();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

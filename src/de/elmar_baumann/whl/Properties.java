@@ -38,5 +38,10 @@ public final class Properties {
      */
     public static final String APP_VERSION = "0.1.2";
 
+    /**
+     * Text encoding
+     */
+    public static final String TEXT_ENCODING = "UTF-8";
+
     private Properties() {}
 }

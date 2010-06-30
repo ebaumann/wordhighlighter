@@ -74,7 +74,7 @@ public final class TextfileWordbook {
         words.clear();
 
         FileInputStream fis     = new FileInputStream(file);
-        Scanner         scanner = new Scanner(fis, "UTF-8");
+        Scanner         scanner = new Scanner(fis, Properties.TEXT_ENCODING);
 
         try {
             while (scanner.hasNextLine()) {

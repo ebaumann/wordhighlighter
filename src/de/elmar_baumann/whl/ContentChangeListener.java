@@ -1,5 +1,5 @@
 /*
- * @(#)Main.java    Created on 2010-06-25
+ * @(#)ContentListener.java    Created on 2010-06-30
  *
  * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
  *
@@ -21,32 +21,24 @@
 
 package de.elmar_baumann.whl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.UIManager;
+import java.io.File;
 
 /**
- * The {@link #main(java.lang.String[])} method starts this application.
+ * Listens to changes of content.
  *
  * @author Elmar Baumann
  */
-public class Main {
-    public static void main(String[] args) {
-        setSystemLookAndFeel();
+public interface ContentChangeListener {
 
-        WordHighlighterFrame dlg = new WordHighlighterFrame();
+    /**
+     * A text file has been read.
+     *
+     * @param file text file
+     */
+    public void textFileRead(File file);
 
-        dlg.setVisible(true);
-    }
-
-    private static void setSystemLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private Main() {}
+    /**
+     * The content has been changed <em>not</em> by reading a text file.
+     */
+    public void contentChanged();
 }

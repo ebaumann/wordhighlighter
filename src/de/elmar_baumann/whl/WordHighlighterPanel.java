@@ -29,10 +29,13 @@ import java.io.InputStream;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * Panel with a text area highlighting words read from a wordbook.
@@ -49,11 +52,57 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
         ResourceBundle.getBundle("de/elmar_baumann/whl/Bundle");
     private File wordbookDir;
     private File textfileDir;
+    private final Set<ContentChangeListener> contentChangeListeners =
+            new CopyOnWriteArraySet<ContentChangeListener>();
+    private boolean textfileRead;
 
     public WordHighlighterPanel() {
         initComponents();
         hl = new TextHighlighter(textArea, TextHighlighter.Option.IGNORE_CASE);
         readWordbookFromPrefs();
+        textArea.getDocument().addDocumentListener(new ContentChangedListener());
+    }
+
+    public void addContentChangeListener(ContentChangeListener listener) {
+        contentChangeListeners.add(listener);
+    }
+
+    public void removeContentChangeListener(ContentChangeListener listener) {
+        contentChangeListeners.remove(listener);
+    }
+
+    private void notifyTextfileRead(File file) {
+        for (ContentChangeListener l : contentChangeListeners) {
+            l.textFileRead(file);
+        }
+    }
+
+    private void notifyContentChanged() {
+        for (ContentChangeListener l : contentChangeListeners) {
+            l.contentChanged();
+        }
+    }
+
+    private class ContentChangedListener implements DocumentListener {
+
+        public void insertUpdate(DocumentEvent e) {
+            checkNotify();
+        }
+
+        public void removeUpdate(DocumentEvent e) {
+            checkNotify();
+        }
+
+        public void changedUpdate(DocumentEvent e) {
+            checkNotify();
+        }
+
+        private void checkNotify() {
+            if (!textfileRead) {
+                notifyContentChanged();
+            }
+        }
+
     }
 
     private void readWordbookFromPrefs() {
@@ -123,7 +172,7 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
             try {
                 textfileDir = selFile.getParentFile();
                 is          = new FileInputStream(selFile);
-                scanner     = new Scanner(is);
+                scanner     = new Scanner(is, Properties.TEXT_ENCODING);
 
                 StringBuilder text    = new StringBuilder();
                 String        NL      = System.getProperty("line.separator");
@@ -132,7 +181,10 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
                     text.append(scanner.nextLine()).append(NL);
                 }
 
+                textfileRead = true;
                 textArea.setText(text.toString());
+                notifyTextfileRead(selFile);
+                textfileRead = false;
             } catch (Exception ex) {
                 Logger.getLogger(WordHighlighterPanel.class.getName()).log(
                                  Level.SEVERE, null, ex);
