@@ -38,17 +38,25 @@ import javax.swing.JOptionPane;
  *
  * @author Elmar Baumann
  */
-public class WordHighlighterFrame extends javax.swing.JFrame {
+public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFileListener {
     private static final long serialVersionUID = 1L;
+    private static final int RECENT_FILE_COUNT = 10;
     private static final String KEY_WIDTH = "WordHighlighterFrame.Width";
     private static final String KEY_HEIGHT = "WordHighlighterFrame.Height";
     private static final String KEY_X = "WordHighlighterFrame.X";
     private static final String KEY_Y = "WordHighlighterFrame.Y";
     private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(
                                                  "de/elmar_baumann/whl/Bundle");
+    private final RecentFiles recentFiles;
 
     public WordHighlighterFrame() {
         initComponents();
+        recentFiles = new RecentFiles(RECENT_FILE_COUNT, menuRecentFiles);
+        postInitComponents();
+    }
+
+    private void postInitComponents() {
+        recentFiles.addListener(this);
         panel.addContentChangeListener(new TextfileDisplayer());
     }
 
@@ -159,6 +167,26 @@ public class WordHighlighterFrame extends javax.swing.JFrame {
                                       JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public void selected(File file) {
+        readFile(file);
+    }
+
+    private void readFile() {
+        File file = panel.readTextFile();
+
+        if (file != null) {
+            recentFiles.setMostRecentFile(file);
+        }
+    }
+
+    private void readFile(File file) {
+        File f = panel.readTextFile(file);
+
+        if (f != null) {
+            recentFiles.setMostRecentFile(f);
+        }
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -172,6 +200,7 @@ public class WordHighlighterFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemReadTextfile = new javax.swing.JMenuItem();
+        menuRecentFiles = new javax.swing.JMenu();
         sep1 = new javax.swing.JPopupMenu.Separator();
         menuItemExit = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
@@ -197,6 +226,9 @@ public class WordHighlighterFrame extends javax.swing.JFrame {
             }
         });
         menuFile.add(menuItemReadTextfile);
+
+        menuRecentFiles.setText(bundle.getString("WordHighlighterFrame.menuRecentFiles.text")); // NOI18N
+        menuFile.add(menuRecentFiles);
         menuFile.add(sep1);
 
         menuItemExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -264,7 +296,7 @@ public class WordHighlighterFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItemAboutActionPerformed
 
     private void menuItemReadTextfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemReadTextfileActionPerformed
-        panel.readTextfile();
+        readFile();
     }//GEN-LAST:event_menuItemReadTextfileActionPerformed
 
     /**
@@ -293,6 +325,7 @@ public class WordHighlighterFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemHelp;
     private javax.swing.JMenuItem menuItemReadTextfile;
+    private javax.swing.JMenu menuRecentFiles;
     private de.elmar_baumann.whl.WordHighlighterPanel panel;
     private javax.swing.JPopupMenu.Separator sep1;
     // End of variables declaration//GEN-END:variables

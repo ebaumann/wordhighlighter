@@ -24,6 +24,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemReadTextfileActionPerformed"/>
               </Events>
             </MenuItem>
+            <Menu class="javax.swing.JMenu" name="menuRecentFiles">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="de/elmar_baumann/whl/Bundle.properties" key="WordHighlighterFrame.menuRecentFiles.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                </Property>
+              </Properties>
+            </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="sep1">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuItemExit">

@@ -158,49 +158,62 @@ public class WordHighlighterPanel extends javax.swing.JPanel {
         }
     }
 
-    /**
-     * Dislays a file chooser, reads the choosen text file into the thext area
-     * and highlights words in the text.
-     */
-    public void readTextfile() {
-        File selFile = selectTextfile(getTextfileDir());
-
-        if (selFile != null) {
+    public File readTextFile(File file) {
+        if (file == null) {
+            throw new NullPointerException("file == null");
+        }
             InputStream is = null;
             Scanner     scanner = null;
 
-            try {
-                textfileDir = selFile.getParentFile();
-                is          = new FileInputStream(selFile);
-                scanner     = new Scanner(is, Properties.TEXT_ENCODING);
+        try {
+            textfileDir = file.getParentFile();
+            is          = new FileInputStream(file);
+            scanner     = new Scanner(is, Properties.TEXT_ENCODING);
 
-                StringBuilder text    = new StringBuilder();
-                String        NL      = System.getProperty("line.separator");
+            StringBuilder text    = new StringBuilder();
+            String        NL      = System.getProperty("line.separator");
 
-                while (scanner.hasNextLine()){
-                    text.append(scanner.nextLine()).append(NL);
-                }
+            while (scanner.hasNextLine()){
+                text.append(scanner.nextLine()).append(NL);
+            }
 
-                textfileRead = true;
-                textArea.setText(text.toString());
-                notifyTextfileRead(selFile);
-                textfileRead = false;
-            } catch (Exception ex) {
-                Logger.getLogger(WordHighlighterPanel.class.getName()).log(
-                                 Level.SEVERE, null, ex);
-                Messages.errorMessage("WordHighlighterPanel.Error.ReadTextfile");
-            } finally {
-                      scanner.close();
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(WordHighlighterPanel.class.getName())
-                                .log(Level.SEVERE, null, ex);
-                    }
+            textfileRead = true;
+            textArea.setText(text.toString());
+            notifyTextfileRead(file);
+            textfileRead = false;
+            return file;
+        } catch (Exception ex) {
+            Logger.getLogger(WordHighlighterPanel.class.getName()).log(
+                             Level.SEVERE, null, ex);
+            Messages.errorMessage("WordHighlighterPanel.Error.ReadTextfile");
+        } finally {
+                  scanner.close();
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(WordHighlighterPanel.class.getName())
+                            .log(Level.SEVERE, null, ex);
                 }
             }
         }
+        
+        return null;
+    }
+
+    /**
+     * Dislays a file chooser, reads the choosen text file into the thext area
+     * and highlights words in the text.
+     *
+     * @return Read file or null if not read
+     */
+    public File readTextFile() {
+        File selFile = selectTextfile(getTextfileDir());
+
+        if (selFile != null) {
+            return readTextFile(selFile);
+        }
+        return null;
     }
     
     private File getTextfileDir() {
