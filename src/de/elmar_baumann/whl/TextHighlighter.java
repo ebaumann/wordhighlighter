@@ -199,7 +199,7 @@ public final class TextHighlighter implements DocumentListener {
 
                 if (hlWords.contains(currentWord)) {
                     try {
-                        hilit.addHighlight(wordStartIndex, i, painter);
+                        hilit.addHighlight(wordStartIndex, i + 1, painter);
                     } catch (BadLocationException ex) {
                         Logger.getLogger(TextHighlighter.class.getName()).log(
                             Level.SEVERE, null, ex);
@@ -211,7 +211,7 @@ public final class TextHighlighter implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        highlight(e.getOffset());
+        highlight(0);
     }
 
     @Override
