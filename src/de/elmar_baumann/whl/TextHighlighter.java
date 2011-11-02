@@ -22,18 +22,14 @@ import javax.swing.text.JTextComponent;
 public final class TextHighlighter implements DocumentListener {
 
     private final Highlighter hilit = new DefaultHighlighter();
-    private Highlighter.HighlightPainter painter =
-            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
     private final JTextComponent tc;
     private final Set<String> hlWords = new HashSet<String>();
     private final Set<Option> options = EnumSet.noneOf(Option.class);
     private boolean inWord;
     private int wordStartIndex = -1;
 
-    public enum Option {
-
-        NO_OPTON,
-        IGNORE_CASE,}
+    public enum Option { NO_OPTON, IGNORE_CASE,}
 
     public TextHighlighter(JTextComponent tc, Option... options) {
         if (tc == null) {
@@ -54,10 +50,7 @@ public final class TextHighlighter implements DocumentListener {
         painter = new DefaultHighlighter.DefaultHighlightPainter(color);
     }
 
-    public enum Convert {
-
-        NONE,
-        TO_LOWERCASE,}
+    public enum Convert { NONE, TO_LOWERCASE,}
 
     /**
      * Sets the words to highlight and highlights the text of the text
@@ -75,8 +68,7 @@ public final class TextHighlighter implements DocumentListener {
      *                words with uppercase characters, use
      *                {@link Convert#TO_LOWERCASE}
      */
-    public synchronized void setHighlightWords(Set<String> words,
-            Convert convert) {
+    public synchronized void setHighlightWords(Set<String> words, Convert convert) {
         if (words == null) {
             throw new NullPointerException("words == null");
         }
