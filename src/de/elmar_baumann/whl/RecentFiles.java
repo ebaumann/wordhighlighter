@@ -1,24 +1,3 @@
-/*
- * @(#)RecentFiles.java    Created on 2010-07-01
- *
- * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
- */
-
 package de.elmar_baumann.whl;
 
 import java.awt.event.ActionEvent;
@@ -44,18 +23,16 @@ import javax.swing.SwingUtilities;
  * @author Elmar Baumann
  */
 public final class RecentFiles {
-    private static final int              ENTRY_LIMIT = 50;
-    private final int                     maxEntries;
-    private final JMenu                   menu;
-    private final Set<RecentFileListener> listeners =
-        new CopyOnWriteArraySet<RecentFileListener>();
+
+    private static final int ENTRY_LIMIT = 50;
+    private final int maxEntries;
+    private final JMenu menu;
+    private final Set<RecentFileListener> listeners = new CopyOnWriteArraySet<RecentFileListener>();
     private static final String KEY_PREFIX = "RecentFiles.";
 
     public RecentFiles(int maxEntries, JMenu menu) {
         if ((maxEntries < 1) || (maxEntries > ENTRY_LIMIT)) {
-            throw new IllegalArgumentException("Max entries of " + maxEntries
-                                               + " not in range 1 - "
-                                               + ENTRY_LIMIT);
+            throw new IllegalArgumentException("Max entries of " + maxEntries + " not in range 1 - " + ENTRY_LIMIT);
         }
 
         if (menu == null) {
@@ -63,12 +40,13 @@ public final class RecentFiles {
         }
 
         this.maxEntries = maxEntries;
-        this.menu       = menu;
+        this.menu = menu;
         setMenu();
     }
 
     private void setMenu() {
         SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 menu.removeAll();
 
@@ -83,21 +61,20 @@ public final class RecentFiles {
     }
 
     private LinkedList<File> readStoredFiles() {
-        LinkedList<File> files      = new LinkedList<File>();
-        int              index      = 0;
-        boolean          fileStored = false;
+        LinkedList<File> files = new LinkedList<File>();
+        int index = 0;
+        boolean fileStored = false;
 
         try {
             Preferences prefs =
-                Preferences.userNodeForPackage(RecentFiles.class);
+                    Preferences.userNodeForPackage(RecentFiles.class);
 
             do {
-                String path = prefs.get(KEY_PREFIX + Integer.toString(index++),
-                                        null);
+                String path = prefs.get(KEY_PREFIX + Integer.toString(index++), null);
 
                 fileStored = path != null;
 
-                if (fileStored &&!path.trim().isEmpty()) {
+                if (fileStored && !path.trim().isEmpty()) {
                     File file = new File(path.trim());
 
                     if (file.exists()) {
@@ -107,7 +84,7 @@ public final class RecentFiles {
             } while (fileStored && (index < maxEntries));
         } catch (Exception ex) {
             Logger.getLogger(RecentFiles.class.getName()).log(Level.SEVERE,
-                             null, ex);
+                    null, ex);
         }
 
         return files;
@@ -118,16 +95,16 @@ public final class RecentFiles {
 
         try {
             Preferences prefs =
-                Preferences.userNodeForPackage(RecentFiles.class);
+                    Preferences.userNodeForPackage(RecentFiles.class);
             int index = 0;
 
             for (File file : files) {
                 prefs.put(KEY_PREFIX + Integer.toString(index++),
-                          file.getAbsolutePath());
+                        file.getAbsolutePath());
             }
         } catch (Exception ex) {
             Logger.getLogger(RecentFiles.class.getName()).log(Level.SEVERE,
-                             null, ex);
+                    null, ex);
         }
     }
 
@@ -164,11 +141,12 @@ public final class RecentFiles {
     }
 
     private class MenuItemListener implements ActionListener {
-        private final File      file;
+
+        private final File file;
         private final JMenuItem menuItem;
 
         private MenuItemListener(File file, JMenuItem menuItem) {
-            this.file     = file;
+            this.file = file;
             this.menuItem = menuItem;
         }
 

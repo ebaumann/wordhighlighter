@@ -1,23 +1,3 @@
-/*
- * @(#)WordHighlighterFrame.java    Created on 2010-06-25
- *
- * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
- */
 package de.elmar_baumann.whl;
 
 import java.awt.Image;
@@ -29,24 +9,22 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
- * Dialog with a {@link WordHighlighterPanel} and a menu for operations such as
- * reading a text file, displaying help and exiting the application.
- *
  * @author Elmar Baumann
  */
 public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFileListener {
+
     private static final long serialVersionUID = 1L;
     private static final int RECENT_FILE_COUNT = 10;
     private static final String KEY_WIDTH = "WordHighlighterFrame.Width";
     private static final String KEY_HEIGHT = "WordHighlighterFrame.Height";
     private static final String KEY_X = "WordHighlighterFrame.X";
     private static final String KEY_Y = "WordHighlighterFrame.Y";
-    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle(
-                                                 "de/elmar_baumann/whl/Bundle");
+    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("de/elmar_baumann/whl/Bundle");
     private final RecentFiles recentFiles;
 
     public WordHighlighterFrame() {
@@ -73,13 +51,11 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
 
     @Override
     public List<Image> getIconImages() {
-        return Arrays.asList(getIcon("book.png"), getIcon("book32.png"),
-                             getIcon("book48.png"));
+        return Arrays.asList(getIcon("book.png"), getIcon("book32.png"), getIcon("book48.png"));
     }
 
     private Image getIcon(String name) {
-        return new ImageIcon(getClass().getResource("/de/elmar_baumann/whl/"
-                             + name)).getImage();
+        return new ImageIcon(getClass().getResource("/de/elmar_baumann/whl/" + name)).getImage();
     }
 
     @Override
@@ -104,8 +80,7 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
 
     private void writeSizeAndLocation() {
         try {
-            Preferences prefs =
-                    Preferences.userNodeForPackage(WordHighlighterFrame.class);
+            Preferences prefs = Preferences.userNodeForPackage(WordHighlighterFrame.class);
 
             prefs.putInt(KEY_X, getX());
             prefs.putInt(KEY_Y, getY());
@@ -119,11 +94,10 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
 
     private void setSizeAndLocation() {
         try {
-            Preferences prefs =
-                    Preferences.userNodeForPackage(WordHighlighterFrame.class);
+            Preferences prefs = Preferences.userNodeForPackage(WordHighlighterFrame.class);
 
-            int x     = prefs.getInt(KEY_X, -1);
-            int y     = prefs.getInt(KEY_Y, -1);
+            int x = prefs.getInt(KEY_X, -1);
+            int y = prefs.getInt(KEY_Y, -1);
             int width = prefs.getInt(KEY_WIDTH, -1);
             int height = prefs.getInt(KEY_HEIGHT, -1);
 
@@ -146,25 +120,17 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
     }
 
     private void displayHelp() {
-        String title = MessageFormat.format(BUNDLE.getString(
-                      "WordHighlighterFrame.Help.Title"), Properties.APP_NAME);
-        String msg   = MessageFormat.format(
-                      BUNDLE.getString("WordHighlighterFrame.Help.Text"),
-                      Properties.APP_NAME);
+        String title = MessageFormat.format(BUNDLE.getString("WordHighlighterFrame.Help.Title"), Properties.APP_NAME);
+        String msg = MessageFormat.format(BUNDLE.getString("WordHighlighterFrame.Help.Text"), Properties.APP_NAME);
 
-        JOptionPane.showMessageDialog(this, msg, title,
-                                      JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, msg, title, JOptionPane.PLAIN_MESSAGE);
     }
 
     private void displayAbout() {
-        String title = MessageFormat.format(BUNDLE.getString(
-                     "WordHighlighterFrame.About.Title"), Properties.APP_NAME);
-        String msg   = MessageFormat.format(BUNDLE.getString(
-                    "WordHighlighterFrame.About.Text"), Properties.APP_NAME,
-                    Properties.APP_VERSION);
+        String title = MessageFormat.format(BUNDLE.getString("WordHighlighterFrame.About.Title"), Properties.APP_NAME);
+        String msg = MessageFormat.format(BUNDLE.getString("WordHighlighterFrame.About.Text"), Properties.APP_NAME, Properties.APP_VERSION);
 
-        JOptionPane.showMessageDialog(this, msg, title,
-                                      JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void selected(File file) {
@@ -299,14 +265,13 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
         readFile();
     }//GEN-LAST:event_menuItemReadTextfileActionPerformed
 
-    /**
-    * @param args the command line arguments
-    */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 WordHighlighterFrame dialog = new WordHighlighterFrame();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
@@ -316,7 +281,6 @@ public class WordHighlighterFrame extends javax.swing.JFrame implements RecentFi
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuFile;

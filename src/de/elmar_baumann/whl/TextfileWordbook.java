@@ -1,24 +1,3 @@
-/*
- * @(#)TextfileWordbook.java    Created on 2010-06-25
- *
- * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
- */
-
 package de.elmar_baumann.whl;
 
 import java.io.File;
@@ -36,15 +15,13 @@ import java.util.Scanner;
 import java.util.Set;
 
 /**
- * Reads words from a plain text file where each line contains one word.
- *
  * @author Elmar Baumann
  */
 public final class TextfileWordbook {
-    private boolean                   read;
-    private final Set<String>         words = new HashSet<String>(250);
-    private final List<TextConverter> converters =
-        new ArrayList<TextConverter>();
+
+    private boolean read;
+    private final Set<String> words = new HashSet<String>(250);
+    private final List<TextConverter> converters = new ArrayList<TextConverter>();
 
     /**
      * Adds a converter for earch read word. Multiple converters are called in
@@ -63,8 +40,8 @@ public final class TextfileWordbook {
     /**
      * Reads the words from a text file, each line contains a single word.
      *
-     * @param  file text file
-     * @throws           FileNotFoundException
+     * @param file text file
+     * @throws  FileNotFoundException
      */
     public synchronized void read(File file) throws FileNotFoundException {
         if (file == null) {
@@ -73,8 +50,8 @@ public final class TextfileWordbook {
 
         words.clear();
 
-        FileInputStream fis     = new FileInputStream(file);
-        Scanner         scanner = new Scanner(fis, Properties.TEXT_ENCODING);
+        FileInputStream fis = new FileInputStream(file);
+        Scanner scanner = new Scanner(fis, Properties.TEXT_ENCODING);
 
         try {
             while (scanner.hasNextLine()) {
@@ -89,8 +66,7 @@ public final class TextfileWordbook {
                 try {
                     fis.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(TextfileWordbook.class.getName()).log(
-                        Level.SEVERE, null, ex);
+                    Logger.getLogger(TextfileWordbook.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

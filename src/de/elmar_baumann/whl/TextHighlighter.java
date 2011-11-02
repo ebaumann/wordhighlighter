@@ -1,24 +1,3 @@
-/*
- * @(#)TextHighlighter.java    Created on 2010-06-25
- *
- * Copyright (C) 2010 by the Elmar Baumann <eb@elmar-baumann.de>.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA  02110-1301, USA.
- */
-
 package de.elmar_baumann.whl;
 
 import java.awt.Color;
@@ -38,43 +17,24 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 
 /**
- * Highlights words in a text component.
- *
  * @author Elmar Baumann
  */
 public final class TextHighlighter implements DocumentListener {
-    private final Highlighter            hilit = new DefaultHighlighter();
-    private Highlighter.HighlightPainter painter =
-        new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-    private final JTextComponent tc;
-    private final Set<String>    hlWords = new HashSet<String>();
-    private final Set<Option>    options = EnumSet.noneOf(Option.class);
-    private boolean              inWord;
-    private int                  wordStartIndex = -1;
 
-    /**
-     * Options for this highlighter.
-     */
+    private final Highlighter hilit = new DefaultHighlighter();
+    private Highlighter.HighlightPainter painter =
+            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+    private final JTextComponent tc;
+    private final Set<String> hlWords = new HashSet<String>();
+    private final Set<Option> options = EnumSet.noneOf(Option.class);
+    private boolean inWord;
+    private int wordStartIndex = -1;
+
     public enum Option {
 
-        /**
-         * No Options
-         */
         NO_OPTON,
+        IGNORE_CASE,}
 
-        /**
-         * Ignore case (treat words case insensitive)
-         */
-        IGNORE_CASE,
-    }
-
-    /**
-     * Creates an instances.
-     *
-     * @param tc      text component. Listens to changes on it's document and
-     *                changes the highlighted areas if necessary
-     * @param options options
-     */
     public TextHighlighter(JTextComponent tc, Option... options) {
         if (tc == null) {
             throw new NullPointerException("tc == null");
@@ -86,13 +46,6 @@ public final class TextHighlighter implements DocumentListener {
         tc.getDocument().addDocumentListener(this);
     }
 
-    /**
-     * Changes the highlight color.
-     * <p>
-     * Does not affect previously highlighted words.
-     *
-     * @param color new color. Default: {@link Color#YELLOW}.
-     */
     public synchronized void setHighlightColor(Color color) {
         if (color == null) {
             throw new NullPointerException("color == null");
@@ -101,21 +54,10 @@ public final class TextHighlighter implements DocumentListener {
         painter = new DefaultHighlighter.DefaultHighlightPainter(color);
     }
 
-    /**
-     * Conversion of added words.
-     */
     public enum Convert {
 
-        /**
-         * Do not convert words (leave them as they are)
-         */
         NONE,
-
-        /**
-         * Convert words to lowercase
-         */
-        TO_LOWERCASE,
-    }
+        TO_LOWERCASE,}
 
     /**
      * Sets the words to highlight and highlights the text of the text
@@ -145,8 +87,7 @@ public final class TextHighlighter implements DocumentListener {
 
         hlWords.clear();
 
-        if (options.contains(Option.IGNORE_CASE)
-                && convert.equals(Convert.TO_LOWERCASE)) {
+        if (options.contains(Option.IGNORE_CASE) && convert.equals(Convert.TO_LOWERCASE)) {
             addAsLowercase(words);
         } else {
             hlWords.addAll(words);
@@ -161,10 +102,6 @@ public final class TextHighlighter implements DocumentListener {
         }
     }
 
-    /**
-     * Forces highlighting of the complete text (useful e.g. after changing the
-     * highlight color).
-     */
     public synchronized void highlight() {
         highlight(0);
     }
@@ -177,8 +114,8 @@ public final class TextHighlighter implements DocumentListener {
             wordStartIndex = -1;
         }
 
-        String text        = tc.getText();
-        int    len         = text.length();
+        String text = tc.getText();
+        int len = text.length();
         String currentWord = "";
 
         for (int i = offset; i < len; i++) {
@@ -201,8 +138,7 @@ public final class TextHighlighter implements DocumentListener {
                     try {
                         hilit.addHighlight(wordStartIndex, i + 1, painter);
                     } catch (BadLocationException ex) {
-                        Logger.getLogger(TextHighlighter.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                        Logger.getLogger(TextHighlighter.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
